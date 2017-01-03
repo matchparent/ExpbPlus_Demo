@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_decor"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#d0ffffff"
+    android:orientation="vertical">
+
+    <View
+        android:id="@+id/ebm__menu_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+    <ImageButton
+        android:id="@+id/ebm__menu_close_image"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+
+</RelativeLayout>

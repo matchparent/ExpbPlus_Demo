@@ -1,0 +1,25 @@
+<resources>
+    <declare-styleable name="ExpandableMenuOverlay">
+        <attr name="android:layout_width" />
+        <attr name="android:layout_height" />
+        <!-- Line num for each item's text -->
+        <attr name="android:lines" />
+        <!-- Text color for each item's text -->
+        <attr name="android:textColor" />
+        <!-- Dialog dimAmount -->
+        <attr name="dimAmount" format="float" />
+        <!-- Distance between adjacent vertical item -->
+        <attr name="distanceY" format="float" />
+        <!-- Distance between adjacent horizontal item -->
+        <attr name="distanceX" format="float" />
+        <!-- Distance from closebutton to bottom -->
+        <attr name="bottomPad" format="dimension" />
+        <!-- Size for each item's image -->
+        <attr name="itemSize" format="dimension" />
+        <!-- Drawable for closebutton -->
+        <attr name="closeButtonSrc" format="integer" />
+        <!-- Item count for each column -->
+        <attr name="numColumn" format="integer" />
+
+    </declare-styleable>
+</resources>
