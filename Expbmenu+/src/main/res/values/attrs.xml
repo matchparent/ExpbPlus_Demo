@@ -6,6 +6,8 @@
         <attr name="android:lines" />
         <!-- Text color for each item's text -->
         <attr name="android:textColor" />
+        <!-- background color -->
+        <attr name="backColor" format="color" />
         <!-- Dialog dimAmount -->
         <attr name="dimAmount" format="float" />
         <!-- Distance between adjacent vertical item -->
@@ -16,6 +18,8 @@
         <attr name="bottomPad" format="dimension" />
         <!-- Size for each item's image -->
         <attr name="itemSize" format="dimension" />
+        <!-- Size for closebutton's image -->
+        <attr name="closeSize" format="dimension" />
         <!-- Drawable for closebutton -->
         <attr name="closeButtonSrc" format="integer" />
         <!-- Item count for each column -->

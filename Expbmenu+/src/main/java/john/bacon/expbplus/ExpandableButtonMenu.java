@@ -15,13 +15,13 @@
  */
 
 package john.bacon.expbplus;
-
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -62,12 +62,6 @@ public class ExpandableButtonMenu extends RelativeLayout implements View.OnClick
      */
     protected int sWidth;
     protected int sHeight;
-
-    /**
-     * Size for closebtn
-     */
-    protected float closeWidth;
-    protected float closeHeight;
 
     /**
      * Parent for items
@@ -113,6 +107,10 @@ public class ExpandableButtonMenu extends RelativeLayout implements View.OnClick
      */
     protected float itemSize = DEFAULT_ITEM_SIZE;
     /**
+     * Size for close button
+     */
+    protected float closeSize = DEFAULT_ITEM_SIZE;
+    /**
      * Item num for each column
      */
     protected int numColumns = DEFAULT_NUN_COLUMN;
@@ -124,6 +122,10 @@ public class ExpandableButtonMenu extends RelativeLayout implements View.OnClick
      * Line num for each item's text
      */
     protected ColorStateList textColor;
+    /**
+     * backgroud color for menu
+     */
+    protected int backColor;
 
     /**
      * Button click interface. Use setOnMenuButtonClickListener() to
@@ -134,9 +136,7 @@ public class ExpandableButtonMenu extends RelativeLayout implements View.OnClick
     /**
      * index for generating certain entity to indicate current index
      */
-    private int currentIndex = 1;
-
-
+    private int currentIndex = 0;
 
 
     /**
@@ -183,7 +183,7 @@ public class ExpandableButtonMenu extends RelativeLayout implements View.OnClick
         list = new ArrayList<>();
         inflate();
         parseAttributes(attrs);
-        setViewLayoutParams();
+        init();
         calculateAnimationProportions();
     }
 
@@ -323,8 +323,8 @@ public class ExpandableButtonMenu extends RelativeLayout implements View.OnClick
 
         mOverlay = findViewById(R.id.ebm__menu_overlay);
 
-        mCloseBtn = (ImageButton) findViewById(R.id.ebm__menu_close_image);
-        rl_decor = (RelativeLayout) findViewById(R.id.rl_decor);
+        mCloseBtn = findViewById(R.id.ebm__menu_close_image);
+        rl_decor = findViewById(R.id.rl_decor);
         sWidth = ScreenHelper.getScreenWidth(getContext());
         sHeight = ScreenHelper.getScreenHeight(getContext());
         mCloseBtn.setOnClickListener(this);
@@ -344,12 +344,12 @@ public class ExpandableButtonMenu extends RelativeLayout implements View.OnClick
                 bottomPadding = a.getDimension(R.styleable.ExpandableMenuOverlay_bottomPad, DEFAULT_BOTTOM_PADDING);
                 buttonDistanceY = a.getFloat(R.styleable.ExpandableMenuOverlay_distanceY, DEFAULT_BUTTON_DISTANCE_Y);
                 buttonDistanceX = a.getFloat(R.styleable.ExpandableMenuOverlay_distanceX, DEFAULT_BUTTON_DISTANCE_X);
-                closeWidth = a.getDimension(R.styleable.ExpandableMenuOverlay_android_layout_width, DEFAULT_ITEM_SIZE);
-                closeHeight = a.getDimension(R.styleable.ExpandableMenuOverlay_android_layout_height, DEFAULT_ITEM_SIZE);
                 itemSize = a.getDimension(R.styleable.ExpandableMenuOverlay_itemSize, DEFAULT_ITEM_SIZE);
+                closeSize = a.getDimension(R.styleable.ExpandableMenuOverlay_closeSize, DEFAULT_ITEM_SIZE);
                 numColumns = a.getInt(R.styleable.ExpandableMenuOverlay_numColumn, DEFAULT_NUN_COLUMN);
                 lines = a.getInt(R.styleable.ExpandableMenuOverlay_android_lines, DEFAULT_LINES);
                 textColor = a.getColorStateList(R.styleable.ExpandableMenuOverlay_android_textColor);
+                backColor = a.getColor(R.styleable.ExpandableMenuOverlay_backColor, getResources().getColor(R.color.back_default));
 
                 // button resources
                 mCloseBtn.setBackgroundResource(a.getResourceId(R.styleable.ExpandableMenuOverlay_closeButtonSrc, 0));
@@ -364,13 +364,16 @@ public class ExpandableButtonMenu extends RelativeLayout implements View.OnClick
      * by a % of screen width or height accordingly.
      * Some extra padding between buttons is added by default to avoid intersections.
      */
-    private void setViewLayoutParams() {
+    private void init() {
         // Some extra margin to center other buttons in the center of the main button
         LayoutParams rParams = (LayoutParams) mCloseBtn.getLayoutParams();
-        rParams.width = (int) (closeHeight);
-        rParams.height = (int) (closeHeight);
+        rParams.width = (int) (closeSize);
+        rParams.height = (int) (closeSize);
         rParams.setMargins(0, 0, 0, (int) bottomPadding);
+
+        rl_decor.setBackgroundColor(backColor);
     }
+
     /**
      * Initialized animation properties
      */
@@ -399,7 +402,7 @@ public class ExpandableButtonMenu extends RelativeLayout implements View.OnClick
                 float transX = ((i % numColumns) - ((numColumns + (2 * (numColumns % 2) - 1) - 2 * (numColumns % 2)) / 2.0f)) * TRANSLATION_X;
                 float transY = -TRANSLATION_Y * ((i / numColumns) + 1);
 
-                ViewPropertyAnimator.animate(entity.getContainer()).setDuration(ANIMATION_DURATION).translationYBy(transY).translationXBy(transX).setInterpolator(overshoot).setListener(ON_EXPAND_COLLAPSE_LISTENER);
+                ViewPropertyAnimator.animate(entity.getContainer()).setDuration(ANIMATION_DURATION).translationYBy(transY).translationXBy(transX).alpha(1.0f).setInterpolator(overshoot).setListener(ON_EXPAND_COLLAPSE_LISTENER);
             }
     }
 
@@ -416,7 +419,7 @@ public class ExpandableButtonMenu extends RelativeLayout implements View.OnClick
             float transY = TRANSLATION_Y * ((i / numColumns) + 1);
 
             ViewPropertyAnimator.animate(list.get(i).getContainer()).setDuration(ANIMATION_DURATION).translationYBy(transY).
-                    translationXBy(transX).setInterpolator(overshoot).setListener(ON_EXPAND_COLLAPSE_LISTENER);
+                    translationXBy(transX).alpha(0.3f).setInterpolator(overshoot).setListener(ON_EXPAND_COLLAPSE_LISTENER);
         }
     }
 
@@ -489,7 +492,7 @@ public class ExpandableButtonMenu extends RelativeLayout implements View.OnClick
 
     }
 
-    private TextView getTextView(int pos) {
+    public TextView getTextView(int pos) {
         return list.get(pos).getText();
     }
 
@@ -498,6 +501,13 @@ public class ExpandableButtonMenu extends RelativeLayout implements View.OnClick
         list.add(entity);
         rl_decor.addView(entity.getContainer());
         invalidate();
+    }
+
+    public void clear() {
+        rl_decor.removeAllViews();
+        rl_decor.addView(mCloseBtn);
+        list.clear();
+        currentIndex = 0;
     }
 
     public class ExpandableButtonEntity {
@@ -531,6 +541,7 @@ public class ExpandableButtonMenu extends RelativeLayout implements View.OnClick
             text.setLayoutParams(lp_text);
             text.setLines(lines);
             text.setMaxLines(3);
+            text.setTextSize(TypedValue.COMPLEX_UNIT_SP,12);
             text.setGravity(Gravity.CENTER);
             text.setVisibility(View.VISIBLE);
             text.setPadding(0, 0, 0, 0);
@@ -568,4 +579,5 @@ public class ExpandableButtonMenu extends RelativeLayout implements View.OnClick
     }
 
 }
+
 

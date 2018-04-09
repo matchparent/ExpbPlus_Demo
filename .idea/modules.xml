@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Expb+_Demo.iml" filepath="$PROJECT_DIR$/Expb+_Demo.iml" />
+      <module fileurl="file://C:\Users\Administrator\Documents\GitHub\ExpbPlus_Demo\Expb+_Demo.iml" filepath="C:\Users\Administrator\Documents\GitHub\ExpbPlus_Demo\Expb+_Demo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ExpbPlus_Demo.iml" filepath="$PROJECT_DIR$/ExpbPlus_Demo.iml" />
       <module fileurl="file://$PROJECT_DIR$/Expbmenu+/Expbmenu+.iml" filepath="$PROJECT_DIR$/Expbmenu+/Expbmenu+.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>

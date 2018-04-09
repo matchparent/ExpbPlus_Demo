@@ -4,7 +4,7 @@
     android:id="@+id/rl_decor"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#d0ffffff"
+    android:background="@color/back_default"
     android:orientation="vertical">
 
     <View
